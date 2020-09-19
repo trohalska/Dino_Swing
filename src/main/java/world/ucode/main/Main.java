@@ -1,4 +1,6 @@
-package main;
+package world.ucode.main;
+
+import world.ucode.main.Menu;
 
 public class Main {
 

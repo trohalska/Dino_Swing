@@ -1,4 +1,8 @@
-package game;
+package world.ucode.main;
+
+import world.ucode.gameObj.Character;
+import world.ucode.gameObj.Ground;
+import static world.ucode.main.GameGeometry.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,13 +13,15 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
 //    private static final float GRAVITY = 0.1f;
 //    private static final float GROUND_Y = 300;  // pixels
 //
-    private coordinates.Coordinates ch;
+    private Character ch;
     private Thread t;
+    private Ground land;
 
     public GameLoop() {
 //        setBackground(Color.RED);
+        ch = new Character();
         t = new Thread(this);
-        ch = new coordinates.Coordinates();
+        land = new Ground();
     }
 
     public void startGame() {
@@ -26,6 +32,7 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
         while(true) {
             try {
                 ch.update();
+                land.update();
                 repaint();
                 t.sleep(20);
             } catch(InterruptedException e) {
@@ -35,10 +42,11 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
     }
 
     public void paint(Graphics g) {
-        g.setColor(Color.white);
+        g.setColor(Color.decode("#f7f7f7"));
         g.fillRect(0,0,getWidth(),getHeight());
-        g.setColor(Color.red);
-        g.drawLine(0, (int)ch.GROUND_Y, getWidth(), (int)ch.GROUND_Y);
+//        g.setColor(Color.red);
+//        g.drawLine(0, (int)GROUND_Y, getWidth(), (int)GROUND_Y);
+        land.draw(g);
         ch.draw(g);
     }
 
