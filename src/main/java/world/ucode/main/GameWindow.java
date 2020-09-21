@@ -7,7 +7,7 @@ public class GameWindow {
     private JFrame_settings frame;
     private GameLoop loop;
 
-    public GameWindow() {
+    public GameWindow(GameGeometry gg) {
         frame = new JFrame_settings();
 
         // deletable
@@ -15,7 +15,7 @@ public class GameWindow {
 //        ImageIcon img = new ImageIcon(iconPath);
 //        setIconImage(img.getImage());
 
-        loop = new GameLoop();
+        loop = new GameLoop(gg);
         frame.addKeyListener(loop);
         frame.add(loop);
     }

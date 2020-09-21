@@ -3,6 +3,7 @@ package world.ucode.utils;
 import static world.ucode.main.GameGeometry.*;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class JFrame_settings extends JFrame {
 
@@ -12,5 +13,16 @@ public class JFrame_settings extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+    }
+
+    /** Create one button. */
+    public JButton addButton(String text) {
+        JButton button = new JButton(text);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMargin(new Insets(5,10,5,10));
+//        button.setPreferredSize(new Dimension(60, 20));
+//        button.setBounds(50,100,120,30);
+
+        return button;
     }
 }

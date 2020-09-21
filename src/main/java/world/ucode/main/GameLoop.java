@@ -1,27 +1,39 @@
 package world.ucode.main;
 
 import world.ucode.gameObj.Character;
+import world.ucode.gameObj.Clouds;
 import world.ucode.gameObj.Ground;
+import world.ucode.gameObj.Cacti;
+import world.ucode.utils.GetResource;
 import static world.ucode.main.GameGeometry.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
 public class GameLoop extends JPanel implements Runnable, KeyListener {
-//    private static final float GRAVITY = 0.1f;
-//    private static final float GROUND_Y = 300;  // pixels
-//
+
     private Character ch;
     private Thread t;
     private Ground land;
+    private Clouds cloud;
+    private Cacti cacti;
+    private int score;
+    private long prevTime;
 
-    public GameLoop() {
-//        setBackground(Color.RED);
-        ch = new Character();
+    private GameGeometry.GameState gameState;
+    private BufferedImage gameOverPic;
+
+    public GameLoop(GameGeometry gg) {
+        ch = new Character(gg);
         t = new Thread(this);
         land = new Ground();
+        cloud = new Clouds();
+        cacti = new Cacti(ch);
+        gameState = GameGeometry.GameState.NORMAL;
+        gameOverPic = GetResource.getImage(imgPath + "gameover_text.png");
     }
 
     public void startGame() {
@@ -31,8 +43,7 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
     public void run() {
         while(true) {
             try {
-                ch.update();
-                land.update();
+                update();
                 repaint();
                 t.sleep(20);
             } catch(InterruptedException e) {
@@ -41,13 +52,58 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
         }
     }
 
+    public void update() {
+        if (gameState == GameState.PLAY) {
+            cloud.update();
+            land.update();
+            cacti.update();
+            ch.update();
+            if (!ch.getIsAlive()) {
+                gameState = GameGeometry.GameState.GAMEOVER;
+            }
+        }
+    }
+
+//    public void handleScore(int score) {
+//        this.score += score;
+//    }
+
     public void paint(Graphics g) {
         g.setColor(Color.decode("#f7f7f7"));
         g.fillRect(0,0,getWidth(),getHeight());
-//        g.setColor(Color.red);
+
 //        g.drawLine(0, (int)GROUND_Y, getWidth(), (int)GROUND_Y);
-        land.draw(g);
-        ch.draw(g);
+        switch(gameState) {
+            case PLAY -> {
+                cloud.draw(g);
+                land.draw(g);
+                cacti.draw(g);
+                ch.draw(g);
+                drawScore(g);
+            }
+            case GAMEOVER -> {
+                cloud.draw(g);
+                land.draw(g);
+                cacti.draw(g);
+                ch.drawDead(g);
+                g.drawImage(gameOverPic, SCREEN_WIDTH/2 - gameOverPic.getWidth()/2,
+                        SCREEN_HEIGHT/4 - gameOverPic.getHeight()/2, null);
+            }
+            default -> { // normal
+                ch.draw(g);
+            }
+        }
+    }
+
+    private void drawScore(Graphics g) {
+        g.setColor(Color.black);
+        g.setFont(new Font("Calibri", Font.PLAIN, 15));
+
+        if (System.currentTimeMillis() - prevTime > SLOW_TIME) {
+            score++;
+            prevTime = System.currentTimeMillis();
+        }
+        g.drawString("HI " + String.valueOf(score), 500, 20);
     }
 
     @Override
@@ -56,12 +112,18 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        ch.jump();
 //        System.out.println("key pressed");
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (gameState == GameState.NORMAL) {
+                gameState = GameState.PLAY;
+            } else if (gameState == GameState.PLAY) {
+                ch.jump();
+            }
+        }
 //        System.out.println("key released");
     }
 }

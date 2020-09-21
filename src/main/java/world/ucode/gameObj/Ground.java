@@ -17,23 +17,21 @@ public class Ground {
     private ArrayList<ImageLand> landList;
     private BufferedImage land1, land2, land3;
     private Random random;
-    private String imgPath = "src/main/resources/img/";
 
     public Ground() {
+        landList = new ArrayList<ImageLand>();
         random = new Random();
-
         land1 = GetResource.getImage(imgPath + "land1.png");
         land2 = GetResource.getImage(imgPath + "land2.png");
         land3 = GetResource.getImage(imgPath + "land3.png");
         int numLands = SCREEN_WIDTH / land1.getWidth() + 2;
-        landList = new ArrayList<ImageLand>();
+
         for (int i = 0; i < numLands; ++i) {
             ImageLand imgL = new ImageLand();
             imgL.posX = (int) (i * land1.getWidth());
             imgL.img = getRandomGround();
             landList.add(imgL);
         }
-//        int numImg = width / (land1.getWidth() * 3);
     }
     public void update() {
         for (ImageLand iL : landList) {
