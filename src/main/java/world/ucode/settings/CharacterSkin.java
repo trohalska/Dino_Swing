@@ -20,12 +20,7 @@ public class CharacterSkin extends JPanel implements ActionListener {
 
         JLabel label = new JLabel("Dino's skin color");
         label.setFont(new Font("Calibri", Font.PLAIN, 15));
-//        label.setPreferredSize(new Dimension(500, 300));
-//        label.setHorizontalAlignment(JLabel.CENTER);
-        // label.setAlignmentX(Component.CENTER_ALIGNMENT); // --------- atention
-//        add(label, BorderLayout.CENTER);
 
-        // Create the radio buttons.
         JRadioButton dinoButton = new JRadioButton(dinoString);
         dinoButton.setActionCommand(dinoString);
 
@@ -35,9 +30,6 @@ public class CharacterSkin extends JPanel implements ActionListener {
         JRadioButton greenButton = new JRadioButton(greenString);
         greenButton.setActionCommand(greenString);
 
-//        switch() {
-//
-//        }
         dinoButton.setSelected(true);
 
         //Group the radio buttons.
@@ -56,11 +48,9 @@ public class CharacterSkin extends JPanel implements ActionListener {
         radioPanel.add(dinoButton);
         radioPanel.add(redButton);
         radioPanel.add(greenButton);
-//        radioPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
         add(label, BorderLayout.BEFORE_FIRST_LINE);
         add(radioPanel, BorderLayout.LINE_START);
-//        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
     }
 
     // Listens to the radio buttons.
@@ -72,7 +62,6 @@ public class CharacterSkin extends JPanel implements ActionListener {
         } else {
             gg.setDinoSkin(GameGeometry.ColorSkin.GREEN);
         }
-//        JRadioButton b = e.getSource();
     }
 }
 

@@ -18,16 +18,12 @@ public class Settings {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-//        panel.setLayout(new BorderLayout());
 
         panel.add(Box.createVerticalGlue());
 
         JLabel label = new JLabel("Settings");
         label.setFont(new Font("Calibri", Font.PLAIN, 20));
-//        label.setPreferredSize(new Dimension(500, 300));
-//        label.setHorizontalAlignment(JLabel.CENTER);
-         label.setAlignmentX(Component.CENTER_ALIGNMENT);
-//        panel.add(label, BoxLayout.CENTER);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(label);
 
         panel.add(Box.createVerticalGlue());
@@ -36,10 +32,6 @@ public class Settings {
         JPanel settingsPanel = new JPanel();
         settingsPanel.add(new CharacterSkin(gg));
         panel.add(settingsPanel);
-
-//        JComponent newContentPane = new CharacterSkin();
-//        newContentPane.setOpaque(true); //content panes must be opaque
-//        frame.setContentPane(newContentPane);
 
         panel.add(Box.createVerticalGlue());
 

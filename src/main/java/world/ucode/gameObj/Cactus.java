@@ -15,7 +15,7 @@ public class Cactus extends Enemy {
 
     public Cactus(Character ch) {
         this.ch = ch;
-        img = GetResource.getImage(imgPath + "cactus1.png");
+        img = GetResource.getImage("cactus1.png");
         rect = new Rectangle();
     }
     public void setCactusX(int x) {
@@ -45,9 +45,4 @@ public class Cactus extends Enemy {
 
     @Override
     public boolean isOutOfScreen() { return (posX + img.getWidth() < 0); }
-
-    @Override
-    public boolean isGameOver() {
-        return !ch.getIsAlive();
-    }
 }

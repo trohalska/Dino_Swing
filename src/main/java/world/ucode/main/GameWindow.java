@@ -9,12 +9,6 @@ public class GameWindow {
 
     public GameWindow(GameGeometry gg) {
         frame = new JFrame_settings();
-
-        // deletable
-//        String iconPath = "/src/main/resources/main-character1.png";
-//        ImageIcon img = new ImageIcon(iconPath);
-//        setIconImage(img.getImage());
-
         loop = new GameLoop(gg);
         frame.addKeyListener(loop);
         frame.add(loop);

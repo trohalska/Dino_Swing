@@ -1,6 +1,8 @@
 package world.ucode.main;
 
+import world.ucode.utils.GetResource;
 import world.ucode.utils.JFrame_settings;
+import static world.ucode.main.GameGeometry.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,16 +14,14 @@ public class UserMenu {
     private JFrame_settings frame;
     private Settings set;
     private GameGeometry gg;
-//    private JFrame_settings settings;
     JLabel picture;
 
     public UserMenu() {
         frame = new JFrame_settings();
         gg = new GameGeometry();
         set = new Settings(this, gg);
-//        settings = new JFrame_settings();
 
-        ImageIcon pic = new ImageIcon(GameGeometry.imgPath + "rsz_t-rex.png");
+        ImageIcon pic = new ImageIcon(imgPath + "rsz_t-rex.png");
         picture = new JLabel(pic);
         picture.setPreferredSize(new Dimension(200, 200));
 
@@ -47,12 +47,11 @@ public class UserMenu {
     private JPanel buttonPanel() {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-//        buttonPanel.setLayout(new GridLayout(0, 1));
-//        buttonPanel.setPreferredSize(new Dimension(80, 80));
 
         JButton play = frame.addButton("Play");
         play.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
+                GetResource.playSound(this.getClass().getClassLoader().getResource("sounds/rrrou-1.wav"));
                 (new GameWindow(gg)).startGame();
                 frame.setVisible(false);
             }

@@ -1,7 +1,6 @@
 package world.ucode.gameObj;
 
 import world.ucode.utils.GetResource;
-import static world.ucode.main.GameGeometry.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,7 +10,7 @@ import java.util.Random;
 public class Cacti {
 
     private ArrayList<Enemy> enemies;
-    private BufferedImage cactus1, cactus2;
+    private BufferedImage cactus1, cactus2, cactus3, cactus4, cactus5;
     private Random random;
     private Character ch;
 
@@ -20,8 +19,11 @@ public class Cacti {
         this.ch = ch;
         enemies = new ArrayList<Enemy>();
         random = new Random();
-        cactus1 = GetResource.getImage(imgPath + "cactus1.png");
-        cactus2 = GetResource.getImage(imgPath + "cactus2.png");
+        cactus1 = GetResource.getImage("cactus1.png");
+        cactus2 = GetResource.getImage("cactus2.png");
+//        cactus3 = GetResource.getImage("cactus3.png");
+//        cactus4 = GetResource.getImage("cactus4.png");
+//        cactus5 = GetResource.getImage("cactus5.png");
 
         enemies.add(getRandomCactus());
     }
@@ -29,9 +31,6 @@ public class Cacti {
     public void update() {
         for (Enemy e : enemies) {
             e.update();
-//            if (!ch.getIsAlive()) { //
-//
-//            }
             if (e.getBound().intersects(ch.getBounds())) {
                 ch.setIsAlive(false);
             }
@@ -49,6 +48,11 @@ public class Cacti {
         }
     }
 
+    public void reset() {
+        enemies.clear();
+        enemies.add(getRandomCactus());
+    }
+
     private Cactus getRandomCactus() {
         Cactus cactus = new Cactus(ch);
         cactus.setCactusX(600);
@@ -59,4 +63,18 @@ public class Cacti {
         }
         return cactus;
     }
+
+//    private BufferedImage resize(BufferedImage img) {
+//        int newW = 0, newH = 0;
+//        if (img == cactus1 || img == cactus3 || img == cactus5) {
+//            newW = 49;
+//            newH = 33;
+//        } else {
+//            newW = 23;
+//            newH = 46;
+//        }
+//
+//        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+//        return dimg;
+//    }
 }

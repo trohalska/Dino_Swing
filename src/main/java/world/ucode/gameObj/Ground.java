@@ -21,25 +21,35 @@ public class Ground {
     public Ground() {
         landList = new ArrayList<ImageLand>();
         random = new Random();
-        land1 = GetResource.getImage(imgPath + "land1.png");
-        land2 = GetResource.getImage(imgPath + "land2.png");
-        land3 = GetResource.getImage(imgPath + "land3.png");
+        land1 = GetResource.getImage("land1.png");
+        land2 = GetResource.getImage("land2.png");
+        land3 = GetResource.getImage("land3.png");
         int numLands = SCREEN_WIDTH / land1.getWidth() + 2;
 
         for (int i = 0; i < numLands; ++i) {
-            ImageLand imgL = new ImageLand();
-            imgL.posX = (int) (i * land1.getWidth());
-            imgL.img = getRandomGround();
-            landList.add(imgL);
+            landList.add(NewLand(i));
         }
     }
+
+    private ImageLand NewLand(int i) {
+        ImageLand imgL = new ImageLand();
+        imgL.posX = (int) (i * land1.getWidth());
+        imgL.img = getRandomGround();
+
+        return imgL;
+    }
+
+
     public void update() {
         for (ImageLand iL : landList) {
             iL.posX -= LAND_SPEED;
         }
         if (landList.get(0).posX + land1.getWidth() < 0) {
-            landList.get(0).posX = landList.get(landList.size() - 1).posX + land1.getWidth();
-            landList.add(landList.get(0));
+            ImageLand imgL = new ImageLand();
+            imgL.posX = landList.get(landList.size() - 1).posX + land1.getWidth();
+            imgL.img = getRandomGround();
+            landList.add(imgL);
+
             landList.remove(0);
         }
     }

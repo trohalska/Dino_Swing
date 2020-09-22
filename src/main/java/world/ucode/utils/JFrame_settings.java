@@ -20,8 +20,6 @@ public class JFrame_settings extends JFrame {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMargin(new Insets(5,10,5,10));
-//        button.setPreferredSize(new Dimension(60, 20));
-//        button.setBounds(50,100,120,30);
 
         return button;
     }

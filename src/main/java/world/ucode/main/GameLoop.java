@@ -24,7 +24,8 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
     private long prevTime;
 
     private GameGeometry.GameState gameState;
-    private BufferedImage gameOverPic;
+    private BufferedImage gameoverPic;
+    private BufferedImage restartPic;
 
     public GameLoop(GameGeometry gg) {
         ch = new Character(gg);
@@ -32,8 +33,9 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
         land = new Ground();
         cloud = new Clouds();
         cacti = new Cacti(ch);
-        gameState = GameGeometry.GameState.NORMAL;
-        gameOverPic = GetResource.getImage(imgPath + "gameover_text.png");
+        gameState = GameState.PLAY;
+        gameoverPic = GetResource.getImage("gameover.png");
+        restartPic = GetResource.getImage("restart.png");
     }
 
     public void startGame() {
@@ -58,40 +60,28 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
             land.update();
             cacti.update();
             ch.update();
-            if (!ch.getIsAlive()) {
+            if (!ch.getIsAlive() && gameState != GameGeometry.GameState.GAMEOVER) {
                 gameState = GameGeometry.GameState.GAMEOVER;
+                ch.setCharacterState(CharacterState.DEAD);
+                GetResource.playSound(this.getClass().getClassLoader().getResource("sounds/no-1.wav"));
             }
         }
     }
-
-//    public void handleScore(int score) {
-//        this.score += score;
-//    }
 
     public void paint(Graphics g) {
         g.setColor(Color.decode("#f7f7f7"));
         g.fillRect(0,0,getWidth(),getHeight());
 
-//        g.drawLine(0, (int)GROUND_Y, getWidth(), (int)GROUND_Y);
-        switch(gameState) {
-            case PLAY -> {
-                cloud.draw(g);
-                land.draw(g);
-                cacti.draw(g);
-                ch.draw(g);
-                drawScore(g);
-            }
-            case GAMEOVER -> {
-                cloud.draw(g);
-                land.draw(g);
-                cacti.draw(g);
-                ch.drawDead(g);
-                g.drawImage(gameOverPic, SCREEN_WIDTH/2 - gameOverPic.getWidth()/2,
-                        SCREEN_HEIGHT/4 - gameOverPic.getHeight()/2, null);
-            }
-            default -> { // normal
-                ch.draw(g);
-            }
+        cloud.draw(g);
+        land.draw(g);
+        cacti.draw(g);
+        ch.draw(g);
+        drawScore(g);
+        if (gameState == GameState.GAMEOVER) {
+            g.drawImage(gameoverPic, SCREEN_WIDTH/2 - gameoverPic.getWidth()/2,
+                    SCREEN_HEIGHT/4 - gameoverPic.getHeight()/2, null);
+            g.drawImage(restartPic, SCREEN_WIDTH/2 - restartPic.getWidth()/2,
+                    SCREEN_HEIGHT/4 + gameoverPic.getHeight(), null);
         }
     }
 
@@ -100,30 +90,38 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
         g.setFont(new Font("Calibri", Font.PLAIN, 15));
 
         if (System.currentTimeMillis() - prevTime > SLOW_TIME) {
-            score++;
+            if (gameState == GameState.PLAY) {
+                score++;
+            }
+            if (score % 100 == 0) {
+                GetResource.playSound(this.getClass().getClassLoader().getResource("sounds/nice-work.wav"));
+            }
             prevTime = System.currentTimeMillis();
         }
         g.drawString("HI " + String.valueOf(score), 500, 20);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    private void resetGame() {
+    	ch.setIsAlive(true);
+    	// ch.setX setY
+    	cacti.reset();
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
-//        System.out.println("key pressed");
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (gameState == GameState.PLAY) {
+                ch.jump();
+            } else if (gameState == GameState.GAMEOVER) {
+                gameState = GameState.PLAY;
+                resetGame();
+            }
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (gameState == GameState.NORMAL) {
-                gameState = GameState.PLAY;
-            } else if (gameState == GameState.PLAY) {
-                ch.jump();
-            }
-        }
-//        System.out.println("key released");
-    }
+    public void keyReleased(KeyEvent e) {}
 }
