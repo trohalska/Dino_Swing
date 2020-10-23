@@ -35,7 +35,7 @@ public class Cacti {
                 ch.setIsAlive(false);
             }
         }
-        Enemy first = enemies.get(0);
+        Enemy first = enemies.get(0);  /// mdannik знайшов краш )))
         if (first.isOutOfScreen()) {
             enemies.remove(first);
             enemies.add(getRandomCactus());
