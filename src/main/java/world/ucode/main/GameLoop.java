@@ -98,7 +98,10 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
             }
             prevTime = System.currentTimeMillis();
         }
-        g.drawString("HI " + String.valueOf(score), 500, 20);
+//        int length = String.valueOf(score).length();
+//        String nulls = ;
+        g.drawString(String.valueOf(score), 500, 20);
+//        g.drawString("HI " + String.valueOf(score), 500, 20);
     }
 
     private void resetGame() {
@@ -117,6 +120,7 @@ public class GameLoop extends JPanel implements Runnable, KeyListener {
                 ch.jump();
             } else if (gameState == GameState.GAMEOVER) {
                 gameState = GameState.PLAY;
+                score = 0;
                 resetGame();
             }
         }
