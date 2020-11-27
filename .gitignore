@@ -5,8 +5,3 @@
 *.out
 *.prettierrc
 .vscode
-
-*tmp*
-*build*
-.gradle*
-.idea*
